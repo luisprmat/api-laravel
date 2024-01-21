@@ -21,7 +21,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => Number::format($this->price / 100, locale: app()->getLocale()),
-            'category' => $this->category,
+            'category' => CategoryResource::make($this->whenLoaded('category')),
         ];
     }
 }
