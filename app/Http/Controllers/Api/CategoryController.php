@@ -17,4 +17,9 @@ class CategoryController extends Controller
     {
         return CategoryResource::make($category);
     }
+
+    public function list()
+    {
+        return CategoryResource::collection(Category::all());
+    }
 }
