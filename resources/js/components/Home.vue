@@ -39,7 +39,7 @@ onMounted(() => {
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <div>
-                            <div class="grid grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                                 <div class="space-y-2" v-for="product in products.data" :key="product.id">
                                     <a href="#">
                                         <img src="http://placehold.it/300x400" :alt="product.name" />
@@ -52,7 +52,24 @@ onMounted(() => {
                                 </div>
                             </div>
 
-                            <TailwindPagination :data="products" @pagination-change-page="getProducts" class="mt-4" />
+                            <div class="mt-4 flex flex-col md:flex-row md:justify-between">
+                                <div class="order-last md:order-first mt-2">
+                                    <div>
+                                        <p class="text-sm text-gray-700 leading-5 dark:text-gray-200">
+                                            <span>Mostrando </span>
+                                            <span class="font-medium">{{ products.meta.from }}</span>
+                                            <span> al </span>
+                                            <span class="font-medium">{{ products.meta.to }}</span>
+                                            <span> de </span>
+                                            <span class="font-medium">{{ products.meta.total }}</span>
+                                            <span> resultados</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <TailwindPagination :data="products" @pagination-change-page="getProducts" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
