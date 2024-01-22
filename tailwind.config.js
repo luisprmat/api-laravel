@@ -4,10 +4,10 @@ export default {
     "./resources/**/*.blade.php",
     "./resources/**/*.js",
     "./resources/**/*.vue",
+    "./node_modules/laravel-vue-pagination/src/TailwindPagination.vue",
   ],
   theme: {
     extend: {},
   },
   plugins: [],
 }
-
