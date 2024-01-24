@@ -3,16 +3,7 @@ import { onMounted, ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
 import MainLayout from '@/Layouts/MainLayout.vue';
 
-const categories = ref({})
 const products = ref({})
-
-const getCategories = async () => {
-    await axios.get('/api/categories')
-        .then(response => {
-            categories.value = response.data
-        })
-        .catch((error) => console.log(error))
-}
 
 const getProducts = async (page = 1) => {
     await axios.get(`/api/products?page=${page}`)
@@ -23,7 +14,6 @@ const getProducts = async (page = 1) => {
 }
 
 onMounted(() => {
-    getCategories()
     getProducts()
 })
 </script>
@@ -47,7 +37,7 @@ onMounted(() => {
                                     <a class="text-slate-500 text-xl font-semibold hover:underline">
                                         {{ product.name }}
                                     </a>
-                                    <p>${{ product.price }}</p>
+                                    <p>$ {{ product.price }}</p>
                                     <p class="prose-slate">{{ product.description }}</p>
                                 </div>
                             </div>
@@ -57,11 +47,11 @@ onMounted(() => {
                                     <div>
                                         <p class="text-sm text-gray-700 leading-5 dark:text-gray-200">
                                             <span>Mostrando </span>
-                                            <span class="font-medium">{{ products.meta.from }}</span>
+                                            <span class="font-medium">{{ products.meta?.from }}</span>
                                             <span> al </span>
-                                            <span class="font-medium">{{ products.meta.to }}</span>
+                                            <span class="font-medium">{{ products.meta?.to }}</span>
                                             <span> de </span>
-                                            <span class="font-medium">{{ products.meta.total }}</span>
+                                            <span class="font-medium">{{ products.meta?.total }}</span>
                                             <span> resultados</span>
                                         </p>
                                     </div>

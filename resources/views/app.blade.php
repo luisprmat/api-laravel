@@ -15,7 +15,7 @@
     </head>
     <body class="font-sans antialiased">
         <div id="app">
-            <home></home>
+            <router-view></router-view>
         </div>
     </body>
 </html>
