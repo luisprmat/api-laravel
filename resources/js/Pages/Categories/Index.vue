@@ -1,5 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue'
 import MainLayout from '@/Layouts/MainLayout.vue';
 
 const categories = ref({})
@@ -23,10 +26,34 @@ onMounted(() => {
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Categorías</h2>
         </template>
 
-        <div class="py-12">
+        <div class="pt-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100 max-w-xl">
+                        <h2 class="text-lg font-medium">Nueva categoría</h2>
+
+                        <div>
+                            <form class="mt-6 space-y-6">
+                                <div>
+                                    <InputLabel for="name" value="Nombre" />
+
+                                    <TextInput id="name" type="text" class="mt-1 block w-full" required />
+                                </div>
+
+                                <div>
+                                    <PrimaryButton>Crear</PrimaryButton>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-6 pb-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="text-gray-900 dark:text-gray-100">
                         <div>
                             <!-- Table -->
                             <div class="flex flex-col">

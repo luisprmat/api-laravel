@@ -1,3 +1,6 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -7,7 +10,11 @@ export default {
     "./node_modules/laravel-vue-pagination/src/TailwindPagination.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
-  plugins: [],
+  plugins: [forms],
 }
