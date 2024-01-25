@@ -1,25 +1,34 @@
 <script setup>
 import { ref } from 'vue';
 import CardSection from '@/Components/CardSection.vue';
+import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue'
 
 const name = ref('')
 const processing = ref(false)
+const validationErrors = ref('')
 
 const emit = defineEmits(['categoryCreated'])
 
 const submit = () => {
     processing.value = true
+    validationErrors.value = ''
+
     axios.post('/api/categories', {
         name: name.value
     })
         .then(response => {
             console.log('New Category ID: ' + response.data.data.id)
             name.value = ''
-            processing.value = false
+            validationErrors.value = ''
             emit('categoryCreated')
+        })
+        .catch(function (error) {
+            if (error.response.status === 422) {
+                validationErrors.value = error.response.data.errors.name[0]
+            }
         })
         .finally(() => {
             processing.value = false
@@ -36,7 +45,9 @@ const submit = () => {
                 <div>
                     <InputLabel for="name" value="Nombre" />
 
-                    <TextInput id="name" type="text" class="mt-1 block w-full" required v-model="name" />
+                    <TextInput id="name" type="text" class="mt-1 block w-full" v-model="name" />
+
+                    <InputError class="mt-2" :message="validationErrors" />
                 </div>
 
                 <div>
