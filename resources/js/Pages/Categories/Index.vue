@@ -1,30 +1,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import CardSection from '@/Components/CardSection.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue'
 import MainLayout from '@/Layouts/MainLayout.vue';
+import CreateForm from '@/Pages/Categories/Create.vue';
 
 const categories = ref({})
-const name = ref('')
-const processing = ref(false)
-
-const submit = () => {
-    processing.value = true
-    axios.post('/api/categories', {
-        name: name.value
-    })
-        .then(response => {
-            console.log('New Category ID: ' + response.data.data.id)
-            name.value = ''
-            processing.value = false
-            getCategories()
-        })
-        .finally(() => {
-            processing.value = false
-        })
-}
 
 const getCategories = async () => {
     await axios.get('/api/categories')
@@ -45,23 +25,7 @@ onMounted(() => {
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Categorías</h2>
         </template>
 
-        <CardSection class="pt-12" inner-classes="max-w-xl">
-            <h2 class="text-lg font-medium">Nueva categoría</h2>
-
-            <div>
-                <form @submit.prevent="submit" class="mt-6 space-y-6">
-                    <div>
-                        <InputLabel for="name" value="Nombre" />
-
-                        <TextInput id="name" type="text" class="mt-1 block w-full" required v-model="name" />
-                    </div>
-
-                    <div>
-                        <PrimaryButton :disabled="processing">Crear</PrimaryButton>
-                    </div>
-                </form>
-            </div>
-        </CardSection>
+        <CreateForm @category-created="getCategories" />
 
         <CardSection class="pt-6 pb-12" without-padding>
             <div>
