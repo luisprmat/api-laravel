@@ -6,6 +6,24 @@ import TextInput from '@/Components/TextInput.vue'
 import MainLayout from '@/Layouts/MainLayout.vue';
 
 const categories = ref({})
+const name = ref('')
+const processing = ref(false)
+
+const submit = () => {
+    processing.value = true
+    axios.post('/api/categories', {
+        name: name.value
+    })
+        .then(response => {
+            console.log('New Category ID: ' + response.data.data.id)
+            name.value = ''
+            processing.value = false
+            getCategories()
+        })
+        .finally(() => {
+            processing.value = false
+        })
+}
 
 const getCategories = async () => {
     await axios.get('/api/categories')
@@ -33,15 +51,15 @@ onMounted(() => {
                         <h2 class="text-lg font-medium">Nueva categoría</h2>
 
                         <div>
-                            <form class="mt-6 space-y-6">
+                            <form @submit.prevent="submit" class="mt-6 space-y-6">
                                 <div>
                                     <InputLabel for="name" value="Nombre" />
 
-                                    <TextInput id="name" type="text" class="mt-1 block w-full" required />
+                                    <TextInput id="name" type="text" class="mt-1 block w-full" required v-model="name" />
                                 </div>
 
                                 <div>
-                                    <PrimaryButton>Crear</PrimaryButton>
+                                    <PrimaryButton :disabled="processing">Crear</PrimaryButton>
                                 </div>
                             </form>
                         </div>
