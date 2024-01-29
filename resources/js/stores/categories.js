@@ -101,7 +101,7 @@ export const useCategories = defineStore('categories', () => {
         axios.delete(`/api/categories/${id}`)
             .then(getCategories)
             .catch(error => {
-                console.log(error)
+                alert(error.response.data.message)
             })
     }
 

@@ -39,6 +39,10 @@ onMounted(store.getCategories)
                                                 Nombre
                                             </th>
                                             <th
+                                                class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                Productos
+                                            </th>
+                                            <th
                                                 class="px-6 py-3 bg-gray-50 text-right text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Acciones
                                             </th>
@@ -58,6 +62,11 @@ onMounted(store.getCategories)
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="text-sm leading-5 text-gray-900">
                                                         {{ category.name }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm leading-5 text-gray-900">
+                                                        {{ category.products }}
                                                     </div>
                                                 </td>
                                                 <td
