@@ -95,6 +95,16 @@ export const useCategories = defineStore('categories', () => {
             .finally(() => (loading.value = false))
     }
 
+    const deleteCategory = async (id) => {
+        if(!window.confirm(`¿Está seguro de eliminar la categoría #${id}?`)) return
+
+        axios.delete(`/api/categories/${id}`)
+            .then(getCategories)
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     return {
         categories,
         category,
@@ -109,6 +119,7 @@ export const useCategories = defineStore('categories', () => {
         getCategory,
         storeCategory,
         editCategory,
-        updateCategory
+        updateCategory,
+        deleteCategory
     }
 })
