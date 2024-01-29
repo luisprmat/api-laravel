@@ -13,9 +13,7 @@ const getProducts = async (page = 1) => {
         .catch((error) => console.log(error))
 }
 
-onMounted(() => {
-    getProducts()
-})
+onMounted(getProducts)
 </script>
 
 <template>
@@ -38,6 +36,8 @@ onMounted(() => {
                                         {{ product.name }}
                                     </a>
                                     <p>$ {{ product.price }}</p>
+                                    <p class="italic text-indigo-700"><span class="font-semibold">Categoría: </span>{{
+                                        product.category.name }}</p>
                                     <p class="prose-slate">{{ product.description }}</p>
                                 </div>
                             </div>
