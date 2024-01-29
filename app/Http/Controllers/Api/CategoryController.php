@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        return CategoryResource::collection(Category::all());
+        $categories = Category::withCount('products')->get();
+
+        return CategoryResource::collection($categories);
     }
 
     public function show(Category $category)
@@ -35,6 +38,14 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        $category->loadCount('products');
+
+        if ($category->products_count) {
+            return response()->json([
+                'message' => __('You cannot delete a category with associated products.'),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $category->delete();
 
         return response()->noContent();
