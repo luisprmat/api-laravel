@@ -34,6 +34,7 @@ onMounted(store.getCategories)
                                                 class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 ID
                                             </th>
+                                            <th></th>
                                             <th
                                                 class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Nombre
@@ -57,6 +58,12 @@ onMounted(store.getCategories)
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="text-sm leading-5 text-gray-900">
                                                         {{ category.id }}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div v-if="category.photo_url" class="flex-shrink-0 h-16 w-16">
+                                                        <img class="h-16 w-16 rounded-lg" :src="category.photo_url"
+                                                            :alt="category.name">
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
