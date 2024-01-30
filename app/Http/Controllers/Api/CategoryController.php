@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -41,9 +42,24 @@ class CategoryController extends Controller
 
     public function update(Category $category, StoreCategoryRequest $request)
     {
-        $category->update($request->all());
+        $data = $request->all();
 
-        return new CategoryResource($category);
+        if ($request->hasFile('photo')) {
+            if ($category->photo) {
+                if (Storage::disk('public')->exists($category->photo)) {
+                    Storage::delete($category->photo);
+                }
+            }
+
+            $file = $request->file('photo');
+            $name = 'categories/'.Str::uuid().'.'.$file->extension();
+            $file->storePubliclyAs('public', $name);
+            $data['photo'] = $name;
+        }
+
+        $category->update($data);
+
+        return CategoryResource::make($category);
     }
 
     public function destroy(Category $category)
