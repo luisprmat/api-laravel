@@ -34,7 +34,9 @@ onMounted(store.getCategories)
                                                 class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 ID
                                             </th>
-                                            <th></th>
+                                            <th
+                                                class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            </th>
                                             <th
                                                 class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
                                                 Nombre

@@ -10,7 +10,8 @@ export const useCategories = defineStore('categories', () => {
     const errors = ref('')
     const loading = ref(false)
     const form = reactive({
-        name: ''
+        name: '',
+        photo: ''
     })
     const editForm = reactive({
         name: ''
@@ -54,7 +55,14 @@ export const useCategories = defineStore('categories', () => {
         loading.value = true
         errors.value = ''
 
-        axios.post('/api/categories', form)
+        let serializedCategory = new FormData()
+        for (let item in form) {
+            if (form.hasOwnProperty(item)) {
+                serializedCategory.append(item, form[item])
+            }
+        }
+
+        axios.post('/api/categories', serializedCategory)
             .then(response => {
                 console.log('NEW Category ID: ' + response.data.data.id)
                 getCategories()
