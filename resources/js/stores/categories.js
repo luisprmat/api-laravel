@@ -11,7 +11,8 @@ export const useCategories = defineStore('categories', () => {
     const loading = ref(false)
     const form = reactive({
         name: '',
-        photo: ''
+        photo: '',
+        previewImage: '',
     })
     const editForm = reactive({
         name: ''
@@ -19,6 +20,7 @@ export const useCategories = defineStore('categories', () => {
 
     const resetForm = () => {
         form.name = ''
+        form.previewImage = null
         errors.value = ''
     }
 
