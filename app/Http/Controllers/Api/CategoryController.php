@@ -45,11 +45,7 @@ class CategoryController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('photo')) {
-            if ($category->photo) {
-                if (Storage::disk('public')->exists($category->photo)) {
-                    Storage::delete($category->photo);
-                }
-            }
+            $this->removePhoto($category);
 
             $file = $request->file('photo');
             $name = 'categories/'.Str::uuid().'.'.$file->extension();
@@ -72,8 +68,19 @@ class CategoryController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $this->removePhoto($category);
+
         $category->delete();
 
         return response()->noContent();
+    }
+
+    private function removePhoto(Category $category): void
+    {
+        if ($category->photo) {
+            if (Storage::disk('public')->exists($category->photo)) {
+                Storage::disk('public')->delete($category->photo);
+            }
+        }
     }
 }

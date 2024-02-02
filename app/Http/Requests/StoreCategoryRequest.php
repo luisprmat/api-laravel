@@ -16,7 +16,7 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3'],
-            'photo' => ['max:1024', File::image()]
+            'photo' => ['max:1024', File::image()],
         ];
     }
 }
