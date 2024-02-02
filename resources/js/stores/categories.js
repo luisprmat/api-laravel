@@ -11,15 +11,19 @@ export const useCategories = defineStore('categories', () => {
     const loading = ref(false)
     const form = reactive({
         name: '',
-        photo: '',
-        previewImage: '',
+        photo: null,
+        previewImage: null,
     })
+
+    let serializedCategory = reactive({})
+
     const editForm = reactive({
         name: ''
     })
 
     const resetForm = () => {
         form.name = ''
+        form.photo = null
         form.previewImage = null
         errors.value = ''
     }
@@ -57,25 +61,39 @@ export const useCategories = defineStore('categories', () => {
         loading.value = true
         errors.value = ''
 
-        let serializedCategory = new FormData()
-        for (let item in form) {
-            if (form.hasOwnProperty(item)) {
-                serializedCategory.append(item, form[item])
+        serializedCategory = { ...form }
+
+        if(form.photo) {
+            serializedCategory = new FormData()
+
+            for (let item in form) {
+                if (form.hasOwnProperty(item)) {
+                    if(!form[item]) continue
+                    serializedCategory.append(item, form[item])
+                }
             }
+        } else {
+            delete serializedCategory.photo
+            delete serializedCategory.previewImage
         }
 
         axios.post('/api/categories', serializedCategory)
             .then(response => {
                 console.log('NEW Category ID: ' + response.data.data.id)
-                getCategories()
                 resetForm()
+                getCategories()
             })
             .catch(error => {
                 if (error.response.status === 422) {
-                    errors.value = error.response.data.errors.name[0]
+                    form.photo = null
+                    form.previewImage = null
+                    errors.value = error.response.data.errors
                 }
             })
-            .finally(() => (loading.value = false))
+            .finally(() => {
+                loading.value = false
+                serializedCategory = undefined
+            })
     }
 
     const editCategory = async (cat) => {
@@ -99,7 +117,7 @@ export const useCategories = defineStore('categories', () => {
             })
             .catch(error => {
                 if (error.response.status === 422) {
-                    errors.value = error.response.data.errors.name[0]
+                    errors.value = error.response.data.errors
                 }
             })
             .finally(() => (loading.value = false))
