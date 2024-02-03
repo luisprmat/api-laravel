@@ -44,6 +44,12 @@ class CategoryController extends Controller
     {
         $data = $request->all();
 
+        if ($request->has('delete_photo') && $request->boolean('delete_photo')) {
+            $this->removePhoto($category);
+            $data['photo'] = null;
+            unset($data['delete_photo']);
+        }
+
         if ($request->hasFile('photo')) {
             $this->removePhoto($category);
 

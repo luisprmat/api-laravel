@@ -17,7 +17,7 @@ onMounted(store.getCategories)
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Categorías</h2>
         </template>
 
-        <EditForm v-if="store.category?.id" />
+        <EditForm v-if="store.editing" />
         <CreateForm v-else />
 
         <CardSection class="pt-6 pb-12" without-padding>

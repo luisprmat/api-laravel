@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 
 export const useCategories = defineStore('categories', () => {
     const categories = ref({})
     const category = reactive({
         id: '',
-        name: ''
+        name: '',
+        photo: '',
     })
     const errors = ref('')
     const loading = ref(false)
@@ -17,26 +18,25 @@ export const useCategories = defineStore('categories', () => {
 
     let serializedCategory = reactive({})
 
-    const editForm = reactive({
-        name: ''
+    const editing = computed(() => {
+        if (category?.id) return true
+        return false
     })
 
     const resetForm = () => {
         form.name = ''
         form.photo = null
         form.previewImage = null
-        errors.value = ''
-    }
-
-    const resetEditForm = () => {
-        editForm.name = ''
+        delete form.delete_photo
+        delete form._method
         errors.value = ''
     }
 
     const cancelEdition = () => {
-        resetEditForm()
-        category.id = '',
+        resetForm()
+        category.id = ''
         category.name = ''
+        category.photo = ''
     }
 
     const getCategories = async () => {
@@ -47,13 +47,14 @@ export const useCategories = defineStore('categories', () => {
             .catch((error) => console.log(error))
     }
 
-    const getCategory = async (id) => {
-        await axios.get(`/api/categories/${id}`)
-            .then(response => {
-                category.value = response.data
-            })
-            .catch((error) => console.log(error))
-    }
+    // const getCategory = async (id) => {
+    //     await axios.get(`/api/categories/${id}`)
+    //         .then(response => {
+    //             category.value = response.data
+    //             console.log(category)
+    //         })
+    //         .catch((error) => console.log(error))
+    // }
 
     const storeCategory = async () => {
         if (loading.value) return
@@ -65,6 +66,8 @@ export const useCategories = defineStore('categories', () => {
 
         if(form.photo) {
             serializedCategory = new FormData()
+
+            if(form.previewImage) delete form.previewImage
 
             for (let item in form) {
                 if (form.hasOwnProperty(item)) {
@@ -97,10 +100,11 @@ export const useCategories = defineStore('categories', () => {
     }
 
     const editCategory = async (cat) => {
-        resetEditForm()
+        resetForm()
         category.id = cat.id
         category.name = cat.name
-        editForm.name = category.name
+        category.photo = cat.photo_url
+        form.name = category.name
     }
 
     const updateCategory = async (id) => {
@@ -109,7 +113,29 @@ export const useCategories = defineStore('categories', () => {
         loading.value = true
         errors.value = ''
 
-        axios.put(`/api/categories/${id}`, editForm)
+        form._method = 'PUT'
+
+        if(!category.photo) form.delete_photo = 1
+
+        serializedCategory = { ...form }
+
+        if(form.photo) {
+            serializedCategory = new FormData()
+
+            if(form.previewImage) delete form.previewImage
+
+            for (let item in form) {
+                if (form.hasOwnProperty(item)) {
+                    if(!form[item]) continue
+                    serializedCategory.append(item, form[item])
+                }
+            }
+        } else {
+            delete serializedCategory.photo
+            delete serializedCategory.previewImage
+        }
+
+        axios.post(`/api/categories/${id}`, serializedCategory)
             .then(response => {
                 console.log('Category Updated ID: ' + response.data.data.id)
                 getCategories()
@@ -121,6 +147,10 @@ export const useCategories = defineStore('categories', () => {
                 }
             })
             .finally(() => (loading.value = false))
+    }
+
+    const deleteImage = () => {
+        category.photo = null
     }
 
     const deleteCategory = async (id) => {
@@ -138,16 +168,16 @@ export const useCategories = defineStore('categories', () => {
         category,
         errors,
         loading,
+        editing,
         form,
-        editForm,
         resetForm,
-        resetEditForm,
         cancelEdition,
         getCategories,
-        getCategory,
+        // getCategory,
         storeCategory,
         editCategory,
         updateCategory,
+        deleteImage,
         deleteCategory
     }
 })

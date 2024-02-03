@@ -53,6 +53,7 @@ const handleFileUpload = (payload) => {
 const clearImage = () => {
     store.form.previewImage = null
     store.form.photo = null
+    store.category.photo = null
     clearInputFile(inputFile.value)
 }
 </script>
@@ -67,6 +68,15 @@ const clearImage = () => {
                 </svg>
             </IconButton>
             <img class="object-contain object-center" :src="store.form.previewImage" alt="Preview">
+        </div>
+        <div v-else-if="store.category.photo" class="h-40 w-40 sm:h-56 sm:w-56 relative overflow-hidden">
+            <IconButton @click="clearImage" class="absolute bottom-2 right-2" bg-color="danger">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </IconButton>
+            <img class="object-contain object-center" :src="store.category.photo" alt="Saved image">
         </div>
         <div v-else
             class="h-40 w-40 sm:h-56 sm:w-56 bg-slate-50 border-2 border-dashed rounded flex items-center justify-center">
