@@ -31,7 +31,7 @@ class CategoryController extends Controller
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $name = 'categories/'.Str::uuid().'.'.$file->extension();
-            $file->storePubliclyAs('public', $name);
+            $file->storePubliclyAs('/', $name);
             $data['photo'] = $name;
         }
 
@@ -55,7 +55,7 @@ class CategoryController extends Controller
 
             $file = $request->file('photo');
             $name = 'categories/'.Str::uuid().'.'.$file->extension();
-            $file->storePubliclyAs('public', $name);
+            $file->storePubliclyAs('/', $name);
             $data['photo'] = $name;
         }
 
@@ -84,8 +84,8 @@ class CategoryController extends Controller
     private function removePhoto(Category $category): void
     {
         if ($category->photo) {
-            if (Storage::disk('public')->exists($category->photo)) {
-                Storage::disk('public')->delete($category->photo);
+            if (Storage::exists($category->photo)) {
+                Storage::delete($category->photo);
             }
         }
     }
