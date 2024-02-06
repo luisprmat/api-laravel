@@ -5,11 +5,24 @@
  */
 
 import axios from 'axios';
+import { useAuth } from './stores/auth';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response?.status === 401) {
+            const auth = useAuth()
+            auth.user = false
+        }
+
+        return Promise.reject(error)
+    }
+)
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

@@ -17,5 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('app');
 // });
 
+require __DIR__.'/auth.php';
+
 Route::view('/{any?}', 'app')
     ->where('any', '^((?!api).)*$'); // Any parameter that does not start with 'api'

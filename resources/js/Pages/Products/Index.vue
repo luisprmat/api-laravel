@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
-import MainLayout from '@/Layouts/MainLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 const products = ref({})
 
@@ -17,7 +17,7 @@ onMounted(getProducts)
 </script>
 
 <template>
-    <MainLayout>
+    <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Productos</h2>
         </template>
@@ -65,5 +65,5 @@ onMounted(getProducts)
                 </div>
             </div>
         </div>
-    </MainLayout>
+    </AuthenticatedLayout>
 </template>

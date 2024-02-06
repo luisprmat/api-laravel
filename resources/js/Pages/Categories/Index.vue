@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { useCategories } from '@/stores/categories';
 import CardSection from '@/Components/CardSection.vue';
-import MainLayout from '@/Layouts/MainLayout.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CreateForm from '@/Pages/Categories/Create.vue';
 import EditForm from '@/Pages/Categories/Edit.vue';
 
@@ -12,7 +12,7 @@ onMounted(store.getCategories)
 </script>
 
 <template>
-    <MainLayout>
+    <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Categorías</h2>
         </template>
@@ -111,6 +111,6 @@ onMounted(store.getCategories)
                 <!-- End of table -->
             </div>
         </CardSection>
-    </MainLayout>
+    </AuthenticatedLayout>
 </template>
 
