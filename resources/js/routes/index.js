@@ -34,6 +34,11 @@ const routes = [
         name: 'categories.index',
         beforeEnter: auth,
         component: () => import('@/Pages/Categories/index.vue'),
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('@/Pages/Errors/NotFound.vue'),
     }
 ]
 
