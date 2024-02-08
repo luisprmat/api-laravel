@@ -41,9 +41,10 @@ export const useAuth = defineStore('auth', () => {
         } catch (error) {
             if (error.response.status === 422) {
                 errors.value = error.response.data.errors
+                form.password = ''
+            } else {
+                user.value = false
             }
-            user.value = false
-            form.password = ''
         }
         loading.value = false
     }
@@ -62,8 +63,12 @@ export const useAuth = defineStore('auth', () => {
     }
 
     const getUser = async () => {
-        const response = await axios.get('/api/user')
-        userInfo.value = response.data.data
+        try {
+            const response = await axios.get('/api/user')
+            userInfo.value = response.data.data
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return {
