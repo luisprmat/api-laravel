@@ -12,10 +12,14 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['ability:categories-list'])->only('index');
+        $this->middleware('ability:categories-show')->only('show');
+    }
+
     public function index()
     {
-        abort_if(! auth()->user()->tokenCan('categories-list'), 403);
-
         $categories = Category::withCount('products')->get();
 
         return CategoryResource::collection($categories);
@@ -23,8 +27,6 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        abort_if(! auth()->user()->tokenCan('categories-show'), 403);
-
         return CategoryResource::make($category);
     }
 
