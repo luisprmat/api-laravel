@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Resources\UserResource;
@@ -26,3 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('products', [ProductController::class, 'index']);
 });
+
+// API authentication routes
+Route::post('login', [LoginController::class, 'store'])
+    ->name('api.login');
+
+Route::post('logout', [LoginController::class, 'destroy'])
+    ->middleware('auth:sanctum')
+    ->name('api.logout');
